@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body style="background-color: black; width: 100vw; height: 100vh; margin: 0; padding: 0">
+<img src="" id="display" alt="display-image">
+</body>
+<script>
+  const displayImage = document.getElementById('display');
+  
+  setInterval(async () => {
+    imageChanged()
+        .then((changed) => {
+          if (changed)
+            updateImage();
+        });
+  }, 2000);
+  
+  function imageChanged() {
+    return fetch('/api/image-changed')
+        .then(resp => resp.json())
+        .then(data => data.changed)
+  }
+  
+  function updateImage() {
+    return fetch('/api/image')
+        .then(resp => resp.json())
+        .then(data => {
+          displayImage.src = data.base64;
+        });
+  }
+</script>
+</html>
